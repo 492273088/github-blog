@@ -26,12 +26,12 @@ public class UserServiceImpl implements IUserService {
     private HashRedis hashRedis;
 
     public List<User> findUserList() {
-        Long time = System.currentTimeMillis();
-        List<User> list = userMapper.findUserList();
-        Long count = hashRedis.size("user");
-        for (User user : list){
-            hashRedis.put("user",user.getId().toString(),user.getUserName());
-        }
+//        Long time = System.currentTimeMillis();
+//        List<User> list = userMapper.findUserList();
+//        Long count = hashRedis.size("user");
+//        for (User user : list){
+//            hashRedis.put("user",user.getId().toString(),user.getUserName());
+//        }
         return userMapper.findUserList();
     }
 
@@ -69,5 +69,13 @@ public class UserServiceImpl implements IUserService {
 
     public Boolean exists(User user) {
         return redisCache.hexists(user.getId().toString(),user.getUserName());
+    }
+
+    public void batchInsert(List<User> list) {
+        userMapper.batchInsert(list);
+    }
+
+    public void batchDelete(List<Integer> ids) {
+        userMapper.batchDelete(ids);
     }
 }

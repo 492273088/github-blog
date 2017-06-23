@@ -21,4 +21,7 @@ public interface UserMapper {
 
     List<User> findUserList();
 
+    void batchInsert(List<User> list);
+
+    void batchDelete(List<Integer> ids);
 }

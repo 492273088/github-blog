@@ -6,6 +6,7 @@ import junit.framework.TestCase;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -16,13 +17,34 @@ public class UserServiceImplTest extends TestCase {
     ApplicationContext ac = new ClassPathXmlApplicationContext("classpath:mybatis/spring-mybatis.xml");
     UserMapper userMapper = (UserMapper) ac.getBean("userMapper");
 
+    public void testBatchDelete(){
+        List<Integer> ids = new ArrayList<Integer>();
+        List<User> list = userMapper.findUserList();
+        for (User user : list){
+            ids.add(user.getId());
+        }
+
+        userMapper.batchDelete(ids);
+    }
+
+    public void testBatchInsert() {
+        List<User> list = new ArrayList<User>();
+        Random random = new Random();
+        for(int i = 0;i<1000;i++){
+            User user = new User();
+            user.setAge(random.nextInt(100));
+            user.setUserName("username"+random.nextInt(100));
+            user.setPassword("password"+random.nextInt(100));
+            list.add(user);
+        }
+        userMapper.batchInsert(list);
+    }
 
     public void testFindUserList() throws Exception {
         List<User> list = userMapper.findUserList();
         for (User user : list){
             System.out.println("userId:"+user.getId()+",userName:"+user.getUserName());
         }
-
     }
 
     public void testGetUserById() throws Exception {

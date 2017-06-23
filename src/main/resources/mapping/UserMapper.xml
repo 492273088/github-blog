@@ -71,4 +71,18 @@
     select <include refid="Base_Column_List" /> from user
   </select>
 
+  <insert id="batchInsert" parameterType="java.util.List" >
+    insert into user (user_name,password,age) values
+    <foreach collection="list" item="userInstance" index="index" separator=",">
+      (#{userInstance.user_name,jdbcType=VARCHAR}, #{userInstance.password,jdbcType=VARCHAR}, #{userInstance.age,jdbcType=INTEGER})
+    </foreach>
+  </insert>
+
+  <delete id="batchDelete" >
+    DELETE FROM USER WHERE ID IN
+    <foreach collection="list" item="item" index="index" open="(" close=")" separator=",">
+      #{item}
+    </foreach>
+  </delete>
+
 </mapper>

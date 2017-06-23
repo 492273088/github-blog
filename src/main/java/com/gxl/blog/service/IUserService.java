@@ -20,4 +20,8 @@ public interface IUserService {
     Boolean insertUser(User user);
 
     Boolean exists(User user);
+
+    void batchInsert(List<User> list);
+
+    void batchDelete(List<Integer> ids);
 }
